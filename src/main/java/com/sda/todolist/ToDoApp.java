@@ -23,6 +23,7 @@ public class ToDoApp {
         List<Task> myTaskList = new ArrayList<>();
 
         Scanner in = new Scanner(System.in);
+
         int option = Integer.parseInt(in.nextLine()); //input from user
         if (option == 1) {
             myTaskList.add(new Task("meet psycologist ", new Date(2020, 02, 16), "project1  ", false)); //Adding object in arraylist
@@ -41,7 +42,7 @@ public class ToDoApp {
 
             Task newTask = new Task(name, dueDate, project, false);
             myTaskList.add(newTask);
-            System.out.println("Task has been added to the ToDo List:");
+            System.out.println("New task has been added to the ToDo List:");
             System.out.println(myTaskList);
         }
         in.close();

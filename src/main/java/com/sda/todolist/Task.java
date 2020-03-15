@@ -18,11 +18,11 @@ public class Task {
     }
 
     public String toString() {
-        String str = " ";
+        String str = "";
         str += name;
-        str += dateFormat.format(dueDate);
-        str += project;
-        str += status;
+        str += " " + dateFormat.format(dueDate);
+        str += " " + project;
+        str += " " + status;
         return str;
     }
 }
