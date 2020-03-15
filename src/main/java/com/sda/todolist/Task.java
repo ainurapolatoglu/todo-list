@@ -1,8 +1,10 @@
 package com.sda.todolist;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Task {
+    private final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private String name;
     private Date dueDate;
     private String project;
@@ -18,7 +20,7 @@ public class Task {
     public String toString() {
         String str = " ";
         str += name;
-        str += dueDate;
+        str += dateFormat.format(dueDate);
         str += project;
         str += status;
         return str;
