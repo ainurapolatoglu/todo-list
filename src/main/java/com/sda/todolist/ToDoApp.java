@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class ToDoApp {
 
@@ -21,6 +22,10 @@ public class ToDoApp {
     public static void main(String[] args) throws ParseException, IOException {
 
         List<Task> myTaskList = new ArrayList<>();
+        myTaskList.add(new Task("Ainura", new Date(), "project001", false));
+        myTaskList.add(new Task("Caglar", new Date(), "project001", false));
+        myTaskList.add(new Task("Lova", new Date(), "project001", false));
+
         Scanner in = new Scanner(System.in);
         int option = 0;
         System.out.println("Welcome to ToDoList");
@@ -35,7 +40,9 @@ public class ToDoApp {
             option = Integer.parseInt(in.nextLine()); //input from user
 
             if (option == 1) {
-                myTaskList.forEach(System.out::println);
+               // myTaskList.forEach(System.out::println);
+                IntStream.range(0, myTaskList.size()).mapToObj(i -> (i + 1) + " " + myTaskList.get(i).toString()).forEach(System.out::println);
+
             } else if (option == 2) {
                 System.out.println("Give me the name of the task:");
                 String name = in.nextLine();
@@ -54,9 +61,34 @@ public class ToDoApp {
                 System.out.println(newTask);
 
             } else if (option == 3) {
-                System.out.println("Edit option was chosen");
+                System.out.println("Choose a task id to Edit");
+                int id = Integer.parseInt(in.nextLine());
+
+                System.out.println(myTaskList.get(id-1));
+
+                System.out.println("Change name");
+                String name = in.nextLine();
+                if (name != null){
+                myTaskList.get(id-1).setName(name);}
+                else {
+                    
+                }
+
+                System.out.println("Change date in format dd/MM/yyyy:");
+                String date = in.nextLine();
+                Date dueDate = dateFormat.parse(date);
+                myTaskList.get(id-1).setDateFormat(dueDate);
+
+                System.out.println("Change project:");
+                String project = in.nextLine();
+                myTaskList.get(id-1).setProject(project);
+
+                //Task newTask = new Task(name, dueDate, project, false);
+               // myTaskList.add(newTask);
+
+
             } else if (option == 4) {
-                System.out.println(" Save and Quit option was chose!");
+                System.out.println(" Save and Quit option was chosen!");
                 System.out.println(" Good Bye!");
                 break;
             } else {

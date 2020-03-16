@@ -25,4 +25,14 @@ public class Task {
         str += " " + status;
         return str;
     }
+    public void setName (String name){
+        this.name = name;
+    }
+    public void setProject (String project){
+        this.project = project;
+    }
+    public void setDateFormat (Date dueDate){
+        this.dueDate = dueDate;
+    }
+
 }
