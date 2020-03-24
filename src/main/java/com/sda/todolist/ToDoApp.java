@@ -1,35 +1,32 @@
 package com.sda.todolist;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.nio.file.Path;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Scanner;
-import java.util.stream.IntStream;
+
 
 public class ToDoApp {
 
-    private static final String filepath = "ToDoList.txt";
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
     public static void main(String[] args) throws ParseException, IOException {
 
-        List<Task> myTaskList = new ArrayList<>();
-        myTaskList.add(new Task("Ainura", new Date(), "project001", false));
-        myTaskList.add(new Task("Caglar", new Date(), "project001", false));
-        myTaskList.add(new Task("Lova", new Date(), "project001", false));
 
+        ObjectMapper mapper = new ObjectMapper();
         Scanner in = new Scanner(System.in);
         int option = 0;
+
         System.out.println("Welcome to ToDoList");
         System.out.println("You have X tasks todo and Y tasks are done!");
+        TasksList myTaskList = new TasksList();
 
         do {
             System.out.println("Pick an option:");
@@ -39,52 +36,49 @@ public class ToDoApp {
             System.out.println("(4) Save and Quit");
             option = Integer.parseInt(in.nextLine()); //input from user
 
-            if (option == 1) {
-               // myTaskList.forEach(System.out::println);
-                IntStream.range(0, myTaskList.size()).mapToObj(i -> (i + 1) + " " + myTaskList.get(i).toString()).forEach(System.out::println);
+            if (option == 1) { // Show list of tasks
+                // IntStream.range(0, myTaskList.size()).mapToObj(i -> (i + 1) + " " + myTaskList.get(i).toString()).forEach(System.out::println);
 
-            } else if (option == 2) {
-                System.out.println("Give me the name of the task:");
+            } else if (option == 2) {  //Add new Task
+                System.out.println("Write name of the task:");
                 String name = in.nextLine();
 
-                System.out.println("Give me the due date in format dd/MM/yyyy:");
-                String date = in.nextLine();
-                Date dueDate = dateFormat.parse(date);
+                System.out.println("Write due date in format YYYY-MM-DD:");
+                String enteredDate = in.nextLine();
+                LocalDate dueDate = LocalDate.parse(enteredDate);
 
-                System.out.println("Give me the name of the project:");
+                System.out.println("Write name of the project:");
                 String project = in.nextLine();
 
                 Task newTask = new Task(name, dueDate, project, false);
-                myTaskList.add(newTask);
+                System.out.println(myTaskList.getTasks().add(newTask));
 
-                System.out.println("Your new task is:");
-                System.out.println(newTask);
+
+                try {
+                    //Convert object to JSON string and save into file directly
+                    mapper.writerWithDefaultPrettyPrinter().writeValue(new File("ToDo.json"), myTaskList);
+
+                    //Convert object to JSON string
+                    String jsonInString = mapper.writeValueAsString(myTaskList);
+                    System.out.println(jsonInString);
+
+                    //Convert object to JSON string and pretty print
+                    jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(myTaskList);
+                    System.out.println(jsonInString);
+
+
+                } catch (JsonGenerationException e) {
+                    e.printStackTrace();
+                } catch (JsonMappingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
 
             } else if (option == 3) {
                 System.out.println("Choose a task id to Edit");
-                int id = Integer.parseInt(in.nextLine());
-
-                System.out.println(myTaskList.get(id-1));
-
-                System.out.println("Change name");
-                String name = in.nextLine();
-                if (name != null){
-                myTaskList.get(id-1).setName(name);}
-                else {
-                    
-                }
-
-                System.out.println("Change date in format dd/MM/yyyy:");
-                String date = in.nextLine();
-                Date dueDate = dateFormat.parse(date);
-                myTaskList.get(id-1).setDateFormat(dueDate);
-
-                System.out.println("Change project:");
-                String project = in.nextLine();
-                myTaskList.get(id-1).setProject(project);
-
-                //Task newTask = new Task(name, dueDate, project, false);
-               // myTaskList.add(newTask);
 
 
             } else if (option == 4) {
@@ -95,32 +89,9 @@ public class ToDoApp {
                 System.out.println("Entered option doesn't exist. Please enter correct option!");
             }
         } while (option > 0);
-
-
-
-           /* FileOutputStream fileOut = new FileOutputStream(filepath);
-            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-            try {
-                objectOut.writeObject(newTask.toString());
-                System.out.println("New task was successfully added to a ToDo List");
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            finally {
-                objectOut.close();
-            }
-            */
-
-        // String input = FileUtil.readTextFile(filepath);
-        // System.out.println(input);
-        //FileUtil.writeToTextFile("ToDoList.txt", myTaskList.toString());
-
-        // System.out.println(FileUtil.readTextFile("Task"));
-
-        //FileUtil.readTextFileByLines("file.txt");
-        //Path path = Paths.get("file.txt");
         in.close();
-
     }
 }
+
+
+
