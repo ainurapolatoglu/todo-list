@@ -1,17 +1,13 @@
 package com.sda.todolist;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -19,11 +15,9 @@ public class ToDoApp {
 
     public static void main(String[] args) throws ParseException, IOException {
 
-
         ObjectMapper mapper = new ObjectMapper();
         Scanner in = new Scanner(System.in);
         int option = 0;
-
         System.out.println("Welcome to ToDoList");
         System.out.println("You have X tasks todo and Y tasks are done!");
         TasksList myTaskList = new TasksList();
@@ -51,22 +45,14 @@ public class ToDoApp {
                 String project = in.nextLine();
 
                 Task newTask = new Task(name, dueDate, project, false);
-                System.out.println(myTaskList.getTasks().add(newTask));
-
+                myTaskList.getTasks().add(newTask);
 
                 try {
                     //Convert object to JSON string and save into file directly
                     mapper.writerWithDefaultPrettyPrinter().writeValue(new File("ToDo.json"), myTaskList);
-
-                    //Convert object to JSON string
-                    String jsonInString = mapper.writeValueAsString(myTaskList);
-                    System.out.println(jsonInString);
-
-                    //Convert object to JSON string and pretty print
-                    jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(myTaskList);
-                    System.out.println(jsonInString);
-
-
+                    System.out.println(myTaskList);
+                    //Write to json file with pretty printer
+                    mapper.writerWithDefaultPrettyPrinter().writeValueAsString(myTaskList);
                 } catch (JsonGenerationException e) {
                     e.printStackTrace();
                 } catch (JsonMappingException e) {
@@ -74,8 +60,6 @@ public class ToDoApp {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
 
             } else if (option == 3) {
                 System.out.println("Choose a task id to Edit");
