@@ -20,7 +20,16 @@ public class ToDoApp {
         int option = 0;
         System.out.println("Welcome to ToDoList");
         System.out.println("You have X tasks todo and Y tasks are done!");
-        TasksList myTaskList = new TasksList();
+        TasksList myTaskList = null;
+
+        try {
+            File taskFile = new File("ToDo.json");
+            myTaskList = mapper.readValue(taskFile, TasksList.class);   // creates object of members from file and assigns it to variable
+            System.out.println(taskFile + " file is loaded.");
+
+        } catch (IOException e) {
+            System.out.println("Error opening the file: " + e.getMessage());
+        }
 
         do {
             System.out.println("Pick an option:");
@@ -31,8 +40,7 @@ public class ToDoApp {
             option = Integer.parseInt(in.nextLine()); //input from user
 
             if (option == 1) { // Show list of tasks
-                // IntStream.range(0, myTaskList.size()).mapToObj(i -> (i + 1) + " " + myTaskList.get(i).toString()).forEach(System.out::println);
-
+                System.out.println(myTaskList);
             } else if (option == 2) {  //Add new Task
                 System.out.println("Write name of the task:");
                 String name = in.nextLine();
@@ -50,7 +58,7 @@ public class ToDoApp {
                 try {
                     //Convert object to JSON string and save into file directly
                     mapper.writerWithDefaultPrettyPrinter().writeValue(new File("ToDo.json"), myTaskList);
-                    System.out.println(myTaskList);
+                    System.out.println("Your new task: " + newTask);
                     //Write to json file with pretty printer
                     mapper.writerWithDefaultPrettyPrinter().writeValueAsString(myTaskList);
                 } catch (JsonGenerationException e) {
@@ -63,6 +71,9 @@ public class ToDoApp {
 
             } else if (option == 3) {
                 System.out.println("Choose a task id to Edit");
+                String name = in.nextLine();
+                String taskName = myTaskList.getTasks().toString();
+                System.out.println(taskName);
 
 
             } else if (option == 4) {
