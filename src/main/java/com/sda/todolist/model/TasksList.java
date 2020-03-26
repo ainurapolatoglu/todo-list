@@ -1,12 +1,9 @@
-package com.sda.todolist;
+package com.sda.todolist.model;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sda.todolist.ProjectComparator;
+import com.sda.todolist.model.Task;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -58,24 +55,6 @@ public class TasksList {
         });
     }
 
-
-
-    public void saveAll(){
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            //Convert object to JSON string and save into file directly
-            mapper.writerWithDefaultPrettyPrinter().writeValue(new File("ToDo.json"), tasks);
-
-            //Write to json file with pretty printer
-            mapper.writerWithDefaultPrettyPrinter().writeValueAsString(tasks);
-        } catch (JsonGenerationException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public String toString() {
         return tasks.stream().map(String::valueOf).collect(Collectors.joining("\n", " My Tasks: \n", "\n")).toString();

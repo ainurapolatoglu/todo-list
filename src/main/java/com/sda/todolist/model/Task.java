@@ -1,4 +1,4 @@
-package com.sda.todolist;
+package com.sda.todolist.model;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

@@ -1,5 +1,7 @@
 package com.sda.todolist;
 
+import com.sda.todolist.model.Task;
+
 import java.util.Comparator;
 
 public class ProjectComparator implements Comparator<Task> {

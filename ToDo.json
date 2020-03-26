@@ -1,13 +1,18 @@
 {
   "tasks" : [ {
-    "name" : "1",
+    "name" : "new task",
     "dueDate" : "2020-02-02",
-    "project" : "p1",
-    "completionStatus" : true
+    "project" : "projectX",
+    "completionStatus" : false
   }, {
-    "name" : "Caglar",
-    "dueDate" : "2020-02-05",
-    "project" : "new project",
+    "name" : "without date",
+    "dueDate" : null,
+    "project" : "proje",
+    "completionStatus" : false
+  }, {
+    "name" : "file util",
+    "dueDate" : "2020-04-05",
+    "project" : "file project",
     "completionStatus" : false
   } ]
 }
