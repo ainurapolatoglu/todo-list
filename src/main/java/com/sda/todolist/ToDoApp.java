@@ -104,7 +104,7 @@ public class ToDoApp {
                 } else if (choice.equals("2")) { // Mark task as done
                     taskToEdit.setCompletionStatus(true);
                 } else if (choice.equals("3")) { // Delete task
-                    taskToEdit = null;
+                    myTaskList.getTasks().remove(index-1);
                 } else {
                     System.out.println("Choose correct option.");
                 }
