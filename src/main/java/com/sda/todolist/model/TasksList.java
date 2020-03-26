@@ -50,6 +50,12 @@ public class TasksList {
         Collections.sort(tasks, new Comparator<Task>() {
             @Override
             public int compare(Task t1, Task t2) {
+                if (t1.getDueDate()==null) {
+                    return -1; //consider null as smallest
+                }
+                if (t2.getDueDate()==null){
+                    return 1;
+                }
                 return t1.getDueDate().compareTo(t2.getDueDate());
             }
         });
