@@ -18,7 +18,7 @@ public class ToDoApp {
 
         ObjectMapper mapper = new ObjectMapper();
         Scanner in = new Scanner(System.in);
-        int option = 0;
+        String option;
         System.out.println("Welcome to ToDoList");
         System.out.println("You have X tasks todo and Y tasks are done!");
         TasksList myTaskList = null;
@@ -31,9 +31,9 @@ public class ToDoApp {
             System.out.println("(2) Add New Task");
             System.out.println("(3) Edit Task (update, mark as done, remove)");
             System.out.println("(4) Save and Quit");
-            option = Integer.parseInt(in.nextLine()); //input from user
+            option = in.nextLine(); //input from user
 
-            if (option == 1) { // Show list of tasks
+            if (option.equals("1")) { // Show list of tasks
                 myTaskList.printWithIndex();
                 System.out.println("If you want to sort tasks: (1) by project, (2) by due date");
                 String sortOption = in.nextLine();
@@ -47,7 +47,7 @@ public class ToDoApp {
                     System.out.print("Sorting was not chosen. \n");
                 }
 
-            } else if (option == 2) {  //Add new Task
+            } else if (option.equals("2")) {  //Add new Task
                 System.out.println("Write name of the task:");
                 String name = in.nextLine();
 
@@ -67,7 +67,7 @@ public class ToDoApp {
                 myTaskList.addTask(newTask);
                 System.out.println("Your new task: " + newTask);
 
-            } else if (option == 3) { // Edit task
+            } else if (option.equals("3")) { // Edit task
                 System.out.println("Choose a task number to Edit");
                 int index = Integer.parseInt(in.nextLine());
                 Task taskToEdit = myTaskList.getTask(index-1);
@@ -100,7 +100,6 @@ public class ToDoApp {
                         System.out.println("Project name was NOT changed");
                     }
                     System.out.println("Task details after edit" + taskToEdit);
-
                 } else if (choice.equals("2")) { // Mark task as done
                     taskToEdit.setCompletionStatus(true);
                 } else if (choice.equals("3")) { // Delete task
@@ -109,7 +108,7 @@ public class ToDoApp {
                     System.out.println("Choose correct option.");
                 }
 
-            } else if (option == 4) { // Save and Quit
+            } else if (option.equals("4")) { // Save and Quit
                 fileUtil.saveAll(myTaskList);
                 System.out.println(" Save and Quit option was chosen!");
                 System.out.println(" Good Bye!");
@@ -117,7 +116,7 @@ public class ToDoApp {
             } else {
                 System.out.println("Entered option doesn't exist. Please enter correct option!");
             }
-        } while (option > 0);
+        } while (true);
         in.close();
     }
 }
