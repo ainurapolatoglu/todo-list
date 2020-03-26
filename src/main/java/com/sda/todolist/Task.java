@@ -11,11 +11,9 @@ import com.sda.todolist.jackson.LocalDateSerializer;
 
 import java.time.LocalDate;
 
-
 @JsonRootName(value = "name")
 @JsonPropertyOrder({"name", "dueDate", "project", "completionStatus"})
 public class Task {
-
     private String name;
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
@@ -28,6 +26,10 @@ public class Task {
         this.dueDate = dueDate;
         this.project = project;
         this.completionStatus = completionStatus;
+    }
+
+    public Task() {
+
     }
 
     @JsonGetter("name")
@@ -79,9 +81,11 @@ public class Task {
         str.append(dueDate);
         str.append(", project: ");
         str.append(project);
-        str.append(", Completion status: ");
+        str.append(", Done?: ");
         str.append(completionStatus);
         return str.toString();
     }
+
+
 
 }

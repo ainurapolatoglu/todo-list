@@ -1,13 +1,13 @@
 {
   "tasks" : [ {
-    "name" : "testtest",
+    "name" : "1",
     "dueDate" : "2020-02-02",
-    "project" : "project test",
-    "completionStatus" : false
+    "project" : "p1",
+    "completionStatus" : true
   }, {
-    "name" : "second test task",
-    "dueDate" : "2020-02-02",
-    "project" : "project XXX",
+    "name" : "Caglar",
+    "dueDate" : "2020-02-05",
+    "project" : "new project",
     "completionStatus" : false
   } ]
 }

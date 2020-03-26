@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -39,50 +41,103 @@ public class ToDoApp {
             System.out.println("(4) Save and Quit");
             option = Integer.parseInt(in.nextLine()); //input from user
 
-            if (option == 1) { // Show list of tasks
-                System.out.println(myTaskList);
-            } else if (option == 2) {  //Add new Task
-                System.out.println("Write name of the task:");
-                String name = in.nextLine();
 
-                System.out.println("Write due date in format YYYY-MM-DD:");
-                String enteredDate = in.nextLine();
-                LocalDate dueDate = LocalDate.parse(enteredDate);
+                if (option == 1) { // Show list of tasks
+                    myTaskList.printWithIndex();
+                    System.out.println("If you want to sort tasks: (1) by project, (2) by due date");
+                    String sortOption = in.nextLine();
+                    if (sortOption.equals("1")) {  // show sorted list by Project
+                        myTaskList.sortByProject();
+                        myTaskList.printWithIndex();
+                    } else if (sortOption.equals("2")) { // show sorted list by Due Date
+                        myTaskList.sortByDate();
+                        myTaskList.printWithIndex();
+                    } else {
+                        System.out.print("Sorting was not chosen. \n");
+                    }
 
-                System.out.println("Write name of the project:");
-                String project = in.nextLine();
+                } else if (option == 2) {  //Add new Task
+                    System.out.println("Write name of the task:");
+                    String name = in.nextLine();
 
-                Task newTask = new Task(name, dueDate, project, false);
-                myTaskList.getTasks().add(newTask);
+                    System.out.println("Write due date in format YYYY-MM-DD:");
+                    String enteredDate = in.nextLine();
+                    LocalDate dueDate = null;
+                    try {
+                        dueDate = LocalDate.parse(enteredDate);
+                    } catch (DateTimeParseException d) {
+                        System.out.println("Entered date is in the wrong format. Date was not assigned!!!");
+                    }
 
-                try {
-                    //Convert object to JSON string and save into file directly
-                    mapper.writerWithDefaultPrettyPrinter().writeValue(new File("ToDo.json"), myTaskList);
+                    System.out.println("Write name of the project:");
+                    String project = in.nextLine();
+
+                    Task newTask = new Task(name, dueDate, project, false); // new task
+                    myTaskList.getTasks().add(newTask);
                     System.out.println("Your new task: " + newTask);
-                    //Write to json file with pretty printer
-                    mapper.writerWithDefaultPrettyPrinter().writeValueAsString(myTaskList);
-                } catch (JsonGenerationException e) {
-                    e.printStackTrace();
-                } catch (JsonMappingException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+
+                } else if (option == 3) { // Edit task
+                    System.out.println("Choose a task number to Edit");
+                    int index = Integer.parseInt(in.nextLine());
+                    Task taskToEdit = myTaskList.getTasks().get(index - 1);
+                    System.out.println(taskToEdit);
+                    System.out.println("To edit task press 1, To mark as done press 2, To delete task press 3");
+                    String choice = in.nextLine();
+                    if (choice.equals("1")) { // Edit title, due date and project name
+                        System.out.println("Change task title to:");
+                        String newTitle = in.nextLine();
+                        if (!newTitle.isEmpty()) {
+                            taskToEdit.setName(newTitle);
+                        } else {
+                            System.out.println("Task name was NOT changed");
+                        }
+
+                        System.out.println("Change due date to:");
+                        String newDueDate = in.nextLine();
+                        if (!newDueDate.isEmpty()) {
+                            LocalDate changedDueDate = LocalDate.parse(newDueDate);
+                            taskToEdit.setDueDate(changedDueDate);
+                        } else {
+                            System.out.println("Due date was NOT changed ");
+                        }
+
+                        System.out.println("Change project name to:");
+                        String newProject = in.nextLine();
+                        if (!newProject.isEmpty()) {
+                            taskToEdit.setProject(newProject);
+                        } else {
+                            System.out.println("Project name was NOT changed");
+                        }
+                        System.out.println("Task details after edit" + taskToEdit);
+
+                    } else if (choice.equals("2")) { // Mark task as done
+                        taskToEdit.setCompletionStatus(true);
+                    } else if (choice.equals("3")) { // Delete task
+                        taskToEdit = null;
+                    } else {
+                        System.out.println("Choose correct option.");
+                    }
+
+                } else if (option == 4) { // Save and Quit
+                    try {
+                        //Convert object to JSON string and save into file directly
+                        mapper.writerWithDefaultPrettyPrinter().writeValue(new File("ToDo.json"), myTaskList);
+                        //Write to json file with pretty printer
+                        mapper.writerWithDefaultPrettyPrinter().writeValueAsString(myTaskList);
+                    } catch (JsonGenerationException e) {
+                        e.printStackTrace();
+                    } catch (JsonMappingException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(" Save and Quit option was chosen!");
+                    System.out.println(" Good Bye!");
+                    break;
+
+                } else {
+                    System.out.println("Entered option doesn't exist. Please enter correct option!");
                 }
-
-            } else if (option == 3) {
-                System.out.println("Choose a task id to Edit");
-                String name = in.nextLine();
-                String taskName = myTaskList.getTasks().toString();
-                System.out.println(taskName);
-
-
-            } else if (option == 4) {
-                System.out.println(" Save and Quit option was chosen!");
-                System.out.println(" Good Bye!");
-                break;
-            } else {
-                System.out.println("Entered option doesn't exist. Please enter correct option!");
-            }
         } while (option > 0);
         in.close();
     }

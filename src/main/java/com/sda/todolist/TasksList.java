@@ -1,10 +1,18 @@
 package com.sda.todolist;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @JsonRootName("tasks")
 public class TasksList {
@@ -22,7 +30,54 @@ public class TasksList {
         this.tasks = tasks;
     }
 
+    public void printWithIndex() {
+        int numberOfTasks = tasks.size();
+        IntStream.range(0, numberOfTasks).mapToObj(i -> (i + 1) + " " + tasks.get(i)).forEachOrdered(System.out::println);
+    }
+
+
+    public Task getTask(String id) {
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println(i + ": " + tasks.get(i));
+        }
+        return null;
+    }
+
+    public void sortByProject() {
+        System.out.println("Sorted by Project name");
+        Collections.sort(tasks, new ProjectComparator());
+    }
+
+    public void sortByDate() {
+        System.out.println("Sorted by Date");
+        Collections.sort(tasks, new Comparator<Task>() {
+            @Override
+            public int compare(Task t1, Task t2) {
+                return t1.getDueDate().compareTo(t2.getDueDate());
+            }
+        });
+    }
+
+
+
+    public void saveAll(){
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            //Convert object to JSON string and save into file directly
+            mapper.writerWithDefaultPrettyPrinter().writeValue(new File("ToDo.json"), tasks);
+
+            //Write to json file with pretty printer
+            mapper.writerWithDefaultPrettyPrinter().writeValueAsString(tasks);
+        } catch (JsonGenerationException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public String toString() {
-        return tasks.stream().map(String::valueOf).collect(Collectors.joining("\n", "\n My Tasks: \n", "\n")).toString();
+        return tasks.stream().map(String::valueOf).collect(Collectors.joining("\n", " My Tasks: \n", "\n")).toString();
     }
 }
