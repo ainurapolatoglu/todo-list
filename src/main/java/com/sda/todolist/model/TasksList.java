@@ -32,14 +32,6 @@ public class TasksList {
         IntStream.range(0, numberOfTasks).mapToObj(i -> (i + 1) + " " + tasks.get(i)).forEachOrdered(System.out::println);
     }
 
-
-    public Task getTask(String id) {
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println(i + ": " + tasks.get(i));
-        }
-        return null;
-    }
-
     public void sortByProject() {
         System.out.println("Sorted by Project name");
         Collections.sort(tasks, new ProjectComparator());
@@ -61,6 +53,17 @@ public class TasksList {
         });
     }
 
+    public void deleteTask(int index){
+        tasks.remove(index);
+    }
+
+    public void addTask(Task task){
+        tasks.add(task);
+    }
+
+    public Task getTask(int index){
+        return tasks.get(index);
+    }
 
     public String toString() {
         return tasks.stream().map(String::valueOf).collect(Collectors.joining("\n", " My Tasks: \n", "\n")).toString();

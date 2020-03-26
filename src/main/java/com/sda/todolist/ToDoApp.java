@@ -64,13 +64,13 @@ public class ToDoApp {
                 String project = in.nextLine();
 
                 Task newTask = new Task(name, dueDate, project, false); // new task
-                myTaskList.getTasks().add(newTask);
+                myTaskList.addTask(newTask);
                 System.out.println("Your new task: " + newTask);
 
             } else if (option == 3) { // Edit task
                 System.out.println("Choose a task number to Edit");
                 int index = Integer.parseInt(in.nextLine());
-                Task taskToEdit = myTaskList.getTasks().get(index - 1);
+                Task taskToEdit = myTaskList.getTask(index-1);
                 System.out.println(taskToEdit);
                 System.out.println("To edit task press 1, To mark as done press 2, To delete task press 3");
                 String choice = in.nextLine();
@@ -104,7 +104,7 @@ public class ToDoApp {
                 } else if (choice.equals("2")) { // Mark task as done
                     taskToEdit.setCompletionStatus(true);
                 } else if (choice.equals("3")) { // Delete task
-                    taskToEdit = null;
+                    myTaskList.deleteTask(index-1);
                 } else {
                     System.out.println("Choose correct option.");
                 }
