@@ -42,10 +42,10 @@ public class TasksList {
         Collections.sort(tasks, new Comparator<Task>() {
             @Override
             public int compare(Task t1, Task t2) {
-                if (t1.getDueDate()==null) {
+                if (t1.getDueDate() == null) {
                     return -1; //consider null as smallest
                 }
-                if (t2.getDueDate()==null){
+                if (t2.getDueDate() == null) {
                     return 1;
                 }
                 return t1.getDueDate().compareTo(t2.getDueDate());
@@ -53,16 +53,21 @@ public class TasksList {
         });
     }
 
-    public void deleteTask(int index){
+    public void deleteTask(int index) {
         tasks.remove(index);
     }
 
-    public void addTask(Task task){
+    public void addTask(Task task) {
         tasks.add(task);
     }
 
-    public Task getTask(int index){
-        return tasks.get(index);
+    public Task getTask(int index) {
+        if (index > tasks.size()) {
+            System.out.println("Entered number is less than number of tasks in the list.");
+            return null;
+        } else {
+            return tasks.get(index);
+        }
     }
 
     public String toString() {

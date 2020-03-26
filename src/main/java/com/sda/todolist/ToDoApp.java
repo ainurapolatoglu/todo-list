@@ -70,11 +70,14 @@ public class ToDoApp {
             } else if (option.equals("3")) { // Edit task
                 System.out.println("Choose a task number to Edit");
                 int index = Integer.parseInt(in.nextLine());
-                Task taskToEdit = myTaskList.getTask(index-1);
+                Task taskToEdit = myTaskList.getTask(index - 1);
+                if (taskToEdit == null) {
+                    continue;
+                }
                 System.out.println(taskToEdit);
                 System.out.println("To edit task press 1, To mark as done press 2, To delete task press 3");
                 String choice = in.nextLine();
-                if (choice.equals("1")) { // Edit title, due date and project name
+                if (choice.equals("1")) {                               // Edit title, due date and project name
                     System.out.println("Change task title to:");
                     String newTitle = in.nextLine();
                     if (!newTitle.isEmpty()) {
@@ -100,15 +103,15 @@ public class ToDoApp {
                         System.out.println("Project name was NOT changed");
                     }
                     System.out.println("Task details after edit" + taskToEdit);
-                } else if (choice.equals("2")) { // Mark task as done
+                } else if (choice.equals("2")) {                      // Mark task as done
                     taskToEdit.setCompletionStatus(true);
-                } else if (choice.equals("3")) { // Delete task
-                    myTaskList.deleteTask(index-1);
+                } else if (choice.equals("3")) {                     // Delete task
+                    myTaskList.deleteTask(index - 1);
                 } else {
                     System.out.println("Choose correct option.");
                 }
 
-            } else if (option.equals("4")) { // Save and Quit
+            } else if (option.equals("4")) {                          // Save and Quit
                 fileUtil.saveAll(myTaskList);
                 System.out.println(" Save and Quit option was chosen!");
                 System.out.println(" Good Bye!");
