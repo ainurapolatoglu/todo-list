@@ -62,7 +62,7 @@ public class TasksList {
     }
 
     public Task getTask(int index) {
-        if (index > tasks.size()) {
+        if (index >= tasks.size()) {
             System.out.println("Entered number is less than number of tasks in the list.");
             return null;
         } else {
