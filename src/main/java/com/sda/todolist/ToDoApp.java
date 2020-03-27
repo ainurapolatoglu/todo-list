@@ -69,7 +69,15 @@ public class ToDoApp {
 
             } else if (option.equals("3")) { // Edit task
                 System.out.println("Choose a task number to Edit");
-                int index = Integer.parseInt(in.nextLine());
+                int index;
+
+                try{
+                    index = Integer.parseInt(in.nextLine());
+                } catch (NumberFormatException e) {
+                    System.out.println("That's not a number!");
+                    continue;
+                }
+
                 Task taskToEdit = myTaskList.getTask(index - 1);
                 if (taskToEdit == null) {
                     continue;
