@@ -20,10 +20,11 @@ public class ToDoApp {
         Scanner in = new Scanner(System.in);
         String option;
         System.out.println("Welcome to ToDoList");
-        System.out.println("You have X tasks todo and Y tasks are done!");
+
         TasksList myTaskList = null;
         FileUtil fileUtil = new FileUtil();
-        myTaskList = fileUtil.loadTaskListFile();
+        myTaskList = fileUtil.loadTaskListFile();         // calling a method from FileUtil class to load a file with tasks.
+        System.out.println("You have  " + myTaskList.getTasks().size() + " tasks");
 
         do {
             System.out.println("Pick an option:");
@@ -31,9 +32,9 @@ public class ToDoApp {
             System.out.println("(2) Add New Task");
             System.out.println("(3) Edit Task (update, mark as done, remove)");
             System.out.println("(4) Save and Quit");
-            option = in.nextLine(); //input from user
+            option = in.nextLine();   //input from user
 
-            if (option.equals("1")) { // Show list of tasks
+            if (option.equals("1")) {   // Show list of tasks
                 myTaskList.printWithIndex();
                 System.out.println("If you want to sort tasks: (1) by project, (2) by due date");
                 String sortOption = in.nextLine();
@@ -44,7 +45,7 @@ public class ToDoApp {
                     myTaskList.sortByDate();
                     myTaskList.printWithIndex();
                 } else {
-                    System.out.print("Sorting was not chosen. \n");
+                    System.out.print("Sorting was not chosen. \n");  // if user did not choose any sorting or entered wrong character.
                 }
 
             } else if (option.equals("2")) {  //Add new Task
@@ -55,16 +56,16 @@ public class ToDoApp {
                 String enteredDate = in.nextLine();
                 LocalDate dueDate = null;
                 try {
-                    dueDate = LocalDate.parse(enteredDate);
+                    dueDate = LocalDate.parse(enteredDate);    // parse input from user into LocalDate format
                 } catch (DateTimeParseException d) {
-                    System.out.println("Entered date is in the wrong format. Date was not assigned!!!");
+                    System.out.println("Entered date is in the wrong format. Date was not assigned!!!"); // otherwise Task will not have due Date
                 }
 
                 System.out.println("Write name of the project:");
                 String project = in.nextLine();
 
-                Task newTask = new Task(name, dueDate, project, false); // new task
-                myTaskList.addTask(newTask);
+                Task newTask = new Task(name, dueDate, project, false);  // new task
+                myTaskList.addTask(newTask);   // calling method from TaskList class to add new Task
                 System.out.println("Your new task: " + newTask);
 
             } else if (option.equals("3")) { // Edit task
@@ -72,14 +73,14 @@ public class ToDoApp {
                 int index;
 
                 try{
-                    index = Integer.parseInt(in.nextLine());
+                    index = Integer.parseInt(in.nextLine());  // checking if input from user is number
                 } catch (NumberFormatException e) {
                     System.out.println("That's not a number!");
                     continue;
                 }
 
-                Task taskToEdit = myTaskList.getTask(index - 1);
-                if (taskToEdit == null) {
+                Task taskToEdit = myTaskList.getTask(index - 1);  // calling method from TasksList class to get Task
+                if (taskToEdit == null) {  // if entered task by index does not exist in the list
                     continue;
                 }
                 System.out.println(taskToEdit);
@@ -91,7 +92,7 @@ public class ToDoApp {
                     if (!newTitle.isEmpty()) {
                         taskToEdit.setName(newTitle);
                     } else {
-                        System.out.println("Task name was NOT changed");
+                        System.out.println("Task name was NOT changed"); // if user leave input empty program will keep old title
                     }
 
                     System.out.println("Change due date to:");
@@ -100,7 +101,7 @@ public class ToDoApp {
                         LocalDate changedDueDate = LocalDate.parse(newDueDate);
                         taskToEdit.setDueDate(changedDueDate);
                     } else {
-                        System.out.println("Due date was NOT changed ");
+                        System.out.println("Due date was NOT changed "); // if user leave input empty program will keep old due date
                     }
 
                     System.out.println("Change project name to:");
@@ -108,19 +109,19 @@ public class ToDoApp {
                     if (!newProject.isEmpty()) {
                         taskToEdit.setProject(newProject);
                     } else {
-                        System.out.println("Project name was NOT changed");
+                        System.out.println("Project name was NOT changed"); // if user leave input empty program will keep old project name
                     }
                     System.out.println("Task details after edit" + taskToEdit);
                 } else if (choice.equals("2")) {                      // Mark task as done
                     taskToEdit.setCompletionStatus(true);
                 } else if (choice.equals("3")) {                     // Delete task
-                    myTaskList.deleteTask(index - 1);
+                    myTaskList.deleteTask(index - 1);    //calling method from TasksList class
                 } else {
-                    System.out.println("Choose correct option.");
+                    System.out.println("Choose correct option.");  // if input is not 1,2 or 3
                 }
 
             } else if (option.equals("4")) {                          // Save and Quit
-                fileUtil.saveAll(myTaskList);
+                fileUtil.saveAll(myTaskList);   // calling a method from "FileUtil class to save everything to the json file (update list)
                 System.out.println(" Save and Quit option was chosen!");
                 System.out.println(" Good Bye!");
                 break;
